@@ -10,6 +10,7 @@
    #:while-short
    #:until
    #:forever
+   #:countdown-t-to-0
    ;; File helpers
    #:find-from-file
    #:find-in-file
@@ -381,6 +382,20 @@
        ,@body
        (jump ,repeat-label)
        (note "END FOREVER" t))))
+
+(defmacro countdown-t-to-0 ((num) &body body)
+  "Countdown to 0 using t.  Unable to do tests in loop, but x is free.
+Use existing value in t when num is nil."
+  (note "Countdown t")
+  (when num
+    (copy num :t))
+  (alexandria:with-gensyms (repeat-label)
+    (let ((repeat-label (format nil "COUNTDOWN_T_~A" (+ 1000 (random 1000)))))
+      `(progn
+         (mark ,repeat-label)
+         ,@body
+         (subi :t 1 :t)
+         (tjmp ,repeat-label)))))
 
 (defun count-lines (text)
   (let ((lines (str:lines text))
