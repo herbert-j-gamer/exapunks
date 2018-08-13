@@ -1,12 +1,115 @@
 * Exapunks 
+Scripts for converting from the Exapunks language into common lisp and back again.
+
+** Example
+Allows you to write something like this:
+
+#+BEGIN_SRC lisp
+  (to-cliboard-with-max-lines (50)
+    (grab 300)
+    (link 800)
+    (link 799)
+    (copy :file :x)
+    (repl "find_location")
+
+    ;; Send replacement
+    (copy :file :m)
+    (until (test-eof)
+      (copy :file :m) ;; Needle
+      (copy :file :m)) ;; Replacement
+    (wipe)
+    (kill)
+    (halt)
+
+    ;; UPDATER
+
+    (mark "find_location")
+    ;; x is target
+    (grab 212)
+    (find-in-file :x)
+    (seek -1)
+    (copy :m :file)
+    (forever
+      (seek -9999)
+      (copy :m :x)
+      (find-in-file :x)
+      (seek -1)
+      (copy :m :file)))
+#+END_SRC
+
+And convert it into this:
+
+#+BEGIN_SRC text
+  GRAB 300
+  LINK 800
+  LINK 799
+  COPY F X
+  REPL FIND_LOCATION
+  COPY F M
+
+  NOTE UNTIL
+  TEST EOF
+  TJMP INIT_1508
+  MARK REPEAT_1647
+  COPY F M
+  COPY F M
+  TEST EOF
+  FJMP REPEAT_1647
+  MARK INIT_1508
+  NOTE END UNTIL
+  WIPE
+  KILL
+  HALT
+
+  MARK FIND_LOCATION
+  GRAB 212
+
+  NOTE find-in-file
+
+  NOTE UNTIL
+  TEST F = X
+  TJMP INIT_1882
+  MARK REPEAT_1113
+  TEST F = X
+  FJMP REPEAT_1113
+  MARK INIT_1882
+  NOTE END UNTIL
+  SEEK -1
+  COPY M F
+
+  NOTE FOREVER
+
+  MARK REPEAT_1390
+  SEEK -9999
+  COPY M X
+
+  NOTE find-in-file
+
+  NOTE UNTIL
+  TEST F = X
+  TJMP INIT_1690
+  MARK REPEAT_1156
+  TEST F = X
+  FJMP REPEAT_1156
+  MARK INIT_1690
+  NOTE END UNTIL
+  SEEK -1
+  COPY M F
+  JUMP REPEAT_1390
+  NOTE END FOREVER
+#+END_SRC
 
 ** Usage
 
-** Installation
+Use ~to-cliboard-with-max-lines~ to convert from common lisp into Exa code,
+placing it directly into the clipboard.
 
-** Author
+Use ~clipboard-convert~ to convert from Exa code in the clipboard into common
+lisp, placing it back into the clipboard.
 
-+ herbert.j.gamer (herbert.j.gamer@gmail.com)
+** Notes
+
+Let me know if you need additional documentation.
 
 ** Copyright
 
