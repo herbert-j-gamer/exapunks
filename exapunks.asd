@@ -18,8 +18,21 @@ Authorherbert.j.gamer:  (herbert.j.gamer@gmail.com)
                "trivial-clipboard"
                "str")
   :components ((:module "src"
-                        :components
-                        ((:file "exapunks"))))
+                :components
+                ((:file "package")
+                 (:file "types")
+                 (:file "exapunks")
+                 (:file "branching")
+                 (:file "communication")
+                 (:file "file")
+                 (:file "lifecycle")
+                 (:file "macros")
+                 (:file "movement")
+                 (:file "testing")
+                 (:file "value-manipulation")
+                 (:file "misc")
+                 (:file "loops")
+                 (:file "clipboard"))))
   :description ""
   :long-description
   #.(read-file-string
